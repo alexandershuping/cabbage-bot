@@ -1,4 +1,4 @@
-import config
+import cabbagerc
 import discord
 from discord.ext import commands
 
@@ -6,9 +6,9 @@ cabbageNumber = 1000
 cabbageStealer = 0
 
 description = '''Bot That Performs Cabbage-Related Functions'''
-bot = commands.Bot(command_prefix=config.PREF, description=description)
+bot = commands.Bot(command_prefix=cabbagerc.PREF, description=description)
 modules = [
-	'mod.roller'
+	'mod.roller.roller'
 ]
 
 def autoset():
@@ -59,4 +59,4 @@ Be careful, though: once the cabbages are gone, they're gone until I restart. ''
 		await bot.say('Sorry, ' + ctx.message.author.mention + ', but ' + cabbageStealer.name + ' took the last one!')
 
 autoset()
-bot.run(config.TKN)
+bot.run(cabbagerc.TKN)

@@ -1,0 +1,3 @@
+# Tables for the Walk Game
+WalkGame (pid INTEGER, uid TEXT, posX INTEGER, posY INTEGER, health INTEGER, maxHealth INTEGER, magicPower INTEGER, items INTEGER[], magics INTEGER[])
+WalkGameItems (id INTEGER PRIMARY KEY, name TEXT, canUse BOOLEAN, use TEXT)

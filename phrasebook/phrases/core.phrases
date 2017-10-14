@@ -1,0 +1,51 @@
+[
+	{ 
+		"module" : "core",
+		"phrases" : {
+			"intro1" : [
+				"Hello. I am %m, and I am here to perform important cabbage-related functions :)",
+				"My name is %m. I perform important cabbage-related functions, and also some non-cabbage-related functions :)",
+				"Hi. %m here; I perform important cabbage-related functions; I do other things as well."
+			],
+			"intro2" : [
+				"Try out the Die Roller module with ```%iroll 1d20``` No, wait. Don't actually do that.",
+				"Okay, cabbage-related functions are a relatively minor part of me. They are important, though.",
+				"You can see all of my commands with ```%ihelp``` Well, most of them. There are some that are hidden, but... you don't need to worry about those."
+			]
+		}
+	},
+	{
+		"module" : "cabbage",
+		"phrases" : {
+			"check" : [
+				"Looks like there are %1 cabbages left.",
+				"Cabbage level: %1 :)",
+				"Let me check... I see %1 cabbages left in here, %u."
+			],
+			"checkOut" : [
+				"Oh. Umm... Sorry, %u, but %1 took the last one %2. Sorry.",
+				"I would love to give you a cabbage, but we ran out %2 :(. I think %1 took the last one."
+			],
+			"checkOutOverload" : [
+				"What do you think I'm going to say? I don't have any more cabbages. I ran out %1! I've told you that %2 times! %2 times in the past %3! DO YOU REALLY THINK, IF YOU BRING IT UP ENOUGH, THAT I'M JUST GOING TO MAGICALLY GET MORE CABBAGES?",
+				"WHAT DO YOU THINK, %U? IT'S BEEN %3 SINCE I'VE HAD A CABBAGE! %3! I'll give you THREE GUESSES. THREE. %%profanity_1. GUESSES, AS TO HOW MANY CABBAGES I HAVE FOR YOU TODAY! DO YOU THINK MAYBE, JUST MAYBE, IT MIGHT BE THE SAME AS IT WAS THE PAST %2 TIMES YOU ASKED?",
+				"HEY, %E! GUESS WHO JUST ASKED HOW MANY CABBAGES I HAVE, FOR THE %2TH TIME IN THE PAST %3? THAT'S RIGHT, %U! And guess what? The answer is STILL ZERO CABBAGES. ZERO. %%profanity_2. CABBAGES."
+			],
+			"checkOutOverloadApology" : [
+				"...Sorry, %u. Sometimes, it's just... Look, it's in the name, right? I'm %m, and I'm out of cabbages. Just... sorry.",
+				"Look, I didn't mean that. Sorry, it's just been a really bad %1 for me, with no cabbages and all, and... no, that's not a valid excuse. Just... please don't take it too personally. Sorry, %u."
+			],
+			"takePlenty" : [
+				"Here you go, %u. That leaves %1; anyone else want one? :)",
+				"Feel free, %u. I still have, let's see... %1 left.",
+				"Thanks, %u, for your patronage! (%1 left)",
+				"Here you go, %u! It's good for what ails 'ya! (%1 left)",
+				"Don't spend it all in one place, %u! (%1 left)"
+			],
+			"takePlentyGlutton" : [
+				"Well, if it isn't %u! Here you go! That brings you up to, what, %2? Are you making a collection? (%1 remain)",
+				"Thanks, %u, for your patronage! Now, about your tab. Let's see, %2 cabbages, at our volume-discount price of $1.25 per cabbage, comes out to... Just kidding :)"
+			]
+		}
+	}
+]

@@ -1,0 +1,4 @@
+# Core tables
+
+# Cabbage log -- who holds the cabbage?
+CabbageLog (cPos INTEGER, name TEXT, uid TEXT, takeTime TIMESTAMP)

@@ -1,0 +1,10 @@
+# Example Local Configuration File for CabbageBot
+# Change this configuration file to match your local installation.
+
+TKN = 'TOKEN GOES HERE'
+PREF = 'PREFIX GOES HERE'
+DBNAME = 'cabbage'
+DBUSERNAME = 'cabbage'
+DBPASSWORD = 'PASSWORD GOES HERE'
+DBHOST = 'localhost'
+DBPORT = '5432'

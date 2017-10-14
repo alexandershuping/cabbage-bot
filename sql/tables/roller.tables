@@ -1,0 +1,5 @@
+# Tables for the die roller
+
+# Table to keep track of roll history
+# Note to self: Have Cabbage complain if the user makes too many malformed rolls in a day/week/month
+roller (time TIMESTAMP, malformed BOOLEAN, inputStr TEXT, result INTEGER)

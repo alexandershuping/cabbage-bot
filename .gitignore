@@ -1,5 +1,5 @@
 # Exclude the local config file from commits
-config.py
+cabbagerc.py
 
 # Also exclude any files in the pycache
 __pycache__/*
