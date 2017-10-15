@@ -5,7 +5,7 @@
 			"intro1" : [
 				"Hello. I am %m, and I am here to perform important cabbage-related functions :)",
 				"My name is %m. I perform important cabbage-related functions, and also some non-cabbage-related functions :)",
-				"Hi. %m here; I perform important cabbage-related functions; I do other things as well."
+				"Hi. %m here! I perform important cabbage-related functions; I do other things as well."
 			],
 			"intro2" : [
 				"Try out the Die Roller module with ```%iroll 1d20``` No, wait. Don't actually do that.",
@@ -20,11 +20,13 @@
 			"check" : [
 				"Looks like there are %1 cabbages left.",
 				"Cabbage level: %1 :)",
-				"Let me check... I see %1 cabbages left in here, %u."
+				"Let me check... I see %1 cabbages left in here, %u.",
+				"Let me just check the stockpile... %1 cabbages left, %u!",
+				"Scanning... found %1 cabbages!"
 			],
 			"checkOut" : [
-				"Oh. Umm... Sorry, %u, but %1 took the last one %2. Sorry.",
-				"I would love to give you a cabbage, but we ran out %2 :(. I think %1 took the last one."
+				"Oh. Umm... Sorry, %u, but %1 took the last one %2 ago. Sorry.",
+				"I would love to give you a cabbage, but we ran out %2 ago :(. I think %1 took the last one."
 			],
 			"checkOutOverload" : [
 				"What do you think I'm going to say? I don't have any more cabbages. I ran out %1! I've told you that %2 times! %2 times in the past %3! DO YOU REALLY THINK, IF YOU BRING IT UP ENOUGH, THAT I'M JUST GOING TO MAGICALLY GET MORE CABBAGES?",
@@ -40,11 +42,25 @@
 				"Feel free, %u. I still have, let's see... %1 left.",
 				"Thanks, %u, for your patronage! (%1 left)",
 				"Here you go, %u! It's good for what ails 'ya! (%1 left)",
-				"Don't spend it all in one place, %u! (%1 left)"
+				"Don't spend it all in one place, %u! (%1 left)",
+				"%u just took a cabbage. I've still got %1 left, though."
 			],
 			"takePlentyGlutton" : [
 				"Well, if it isn't %u! Here you go! That brings you up to, what, %2? Are you making a collection? (%1 remain)",
 				"Thanks, %u, for your patronage! Now, about your tab. Let's see, %2 cabbages, at our volume-discount price of $1.25 per cabbage, comes out to... Just kidding :)"
+			],
+			"take" : [
+				"%u just took a cabbage. Now there are only %1 left.",
+				"%u just took a cabbage. Please be sustainable with your cabbage-taking practices; I only have %1 left",
+				"Take a cabbage, %u, but be warned: there are only %1 left in my stockpile, and once they're gone, they're gone.",
+				"Here you go, %u. We only have %1 left.",
+				"The shelves are looking kind of bare, %u. You can have this one, but I only have %1 left now.",
+				"%u just took a cabbage. Caution: only %1 remain."
+			],
+			"takeLast" : [
+				"%U just took the last cabbage!",
+				"Alright, %U. Here is the last cabbage I have.",
+				"The shelves are looking kind of bare, %U. Let me look... yes, I have one more. Here you go."
 			]
 		}
 	}

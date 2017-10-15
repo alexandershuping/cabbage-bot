@@ -1,6 +1,7 @@
 ''' CabbageBase Database Module '''
 
 import psycopg2
+from psycopg2 import sql
 import cabbagerc as rc
 
 class CabbageBase:
@@ -18,6 +19,20 @@ class CabbageBase:
 			return False
 
 		return self.cdb.cursor()
+	
+	def query(self, table):
+		''' Returns all rows from the given table '''
+		cur = self.cdb.cursor()
+		cur.execute(sql.SQL('SELECT * from {};').format(sql.Identifier(table)))
+
+		return cur
+
+	def queryFilter(self, table, elem, val):
+		''' Returns rows from the given table using the given filter '''
+		cur = self.cdb.cursor()
+		cur.execute(sql.SQL('SELECT * FROM {} WHERE {} = %s;').format(sql.Identifier(table), sql.Identifier(elem)), (val,))
+
+		return cur
 	
 	def commit(self):
 		''' Commits a transaction '''

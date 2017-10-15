@@ -8,3 +8,28 @@ DBUSERNAME = 'cabbage'
 DBPASSWORD = 'PASSWORD GOES HERE'
 DBHOST = 'localhost'
 DBPORT = '5432'
+
+# Color settings
+
+cClear = '\033[0m'
+cInfo = '\033[38;5;27m'
+cWarnHeader = '\033[4;38;5;196m'
+cWarn = '\033[38;5;202m'
+cErr = '\033[38;5;1m'
+cCmd = '\033[38;5;17m'
+cPrompt = '\033[38;5;39m'
+cUserIn = '\033[4;38;5;41m'
+
+# Convenient color-out functions
+
+def pinfo(st):
+	print(cClear + cInfo + st + cClear)
+
+def pwarn(st):
+	print(cClear + cWarnHeader + 'WARNING:' + cClear + cWarn + st + cClear)
+
+def perr(st):
+	print(cClear + cErr + st + cClear)
+
+def pcmd(st):
+	print(cClear + cCmd + st + cClear)
