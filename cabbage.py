@@ -63,8 +63,8 @@ async def on_ready():
 async def intro(ctx):
 	''' Test Command '''
 	p = Phrasebook(ctx, bot)
-	await bot.say(p.pickPhrase('intro1'))
-	await bot.say(p.pickPhrase('intro2'))
+	await bot.say(p.pickPhrase('core', 'intro1'))
+	await bot.say(p.pickPhrase('core', 'intro2'))
 
 @bot.command(pass_context=True)
 async def cabbages(ctx):
@@ -74,10 +74,13 @@ async def cabbages(ctx):
 	global cabbageStealer
 	global cabbageTheftTime
 	print('User ' + str(ctx.message.author) + ' requested cabbage count (currently ' + str(cabbageNumber) + ')')
+	if datetime.now().hour < 5:
+		await bot.say(p.pickPhrase('cabbage', 'checkLate'))
+		return
 	if cabbageNumber == 0:
-		await bot.say(p.pickPhrase('checkOut', cabbageStealer, timeStrSince(cabbageTheftTime)))
+		await bot.say(p.pickPhrase('cabbage', 'checkOut', cabbageStealer, timeStrSince(cabbageTheftTime)))
 	else:
-		await bot.say(p.pickPhrase('check', cabbageNumber))
+		await bot.say(p.pickPhrase('cabbage', 'check', cabbageNumber))
 
 @bot.command(pass_context=True)
 async def takeCabbage(ctx):
@@ -92,16 +95,16 @@ Be careful, though: once the cabbages are gone, they're gone until I restart. ''
 	if cabbageNumber > 1:
 		cabbageNumber = cabbageNumber - 1
 		if cabbageNumber > 100:
-			await bot.say(p.pickPhrase('takePlenty', cabbageNumber))
+			await bot.say(p.pickPhrase('cabbage', 'takePlenty', cabbageNumber))
 		else:
-			await bot.say(p.pickPhrase('take', cabbageNumber))
+			await bot.say(p.pickPhrase('cabbage', 'take', cabbageNumber))
 	elif cabbageNumber == 1:
 		cabbageNumber = 0
-		await bot.say(p.pickPhrase('takeLast'))
+		await bot.say(p.pickPhrase('cabbage', 'takeLast'))
 		cabbageStealer = ctx.message.author
 		cabbageTheftTime = datetime.now()
 	else:
-		await bot.say(p.pickPhrase('checkOut', cabbageStealer.name, timeStrSince(cabbageTheftTime)))
+		await bot.say(p.pickPhrase('cabbage', 'checkOut', cabbageStealer.name, timeStrSince(cabbageTheftTime)))
 
 autoset()
 bot.run(cabbagerc.TKN)

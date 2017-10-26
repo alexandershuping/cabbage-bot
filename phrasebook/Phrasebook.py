@@ -15,24 +15,24 @@ class Phrasebook:
 		self.bot = bot
 		random.seed()
 
-	def phrasebookScan(self, ctx):
+	def phrasebookScan(self, mod, ctx):
 		''' Scan the phrasebook for the given context and return all results '''
-		scRes = self.base.queryFilter('phrasebook', 'context', ctx)
+		scRes = self.base.query2Filter('phrasebook', 'module', mod, 'context', ctx)
 		phrases = []
 		for res in scRes:
-			phrases.append(res[1])
+			phrases.append(res[2])
 		
 		return phrases
 
-	def pickPhraseRaw(self, ctx):
+	def pickPhraseRaw(self, mod, ctx):
 		''' Randomly select a phrase from the given context; do not perform
 		    substitution '''
-		return random.choice(self.phrasebookScan(ctx))
+		return random.choice(self.phrasebookScan(mod, ctx))
 
-	def pickPhrase(self, ctx, *customSubs):
+	def pickPhrase(self, mod, ctx, *customSubs):
 		''' Randomly select a phrase from the given context, and perform %
 		    substitutions '''
-		return self.doSubstitutions(self.pickPhraseRaw(ctx), customSubs)
+		return self.doSubstitutions(self.pickPhraseRaw(mod, ctx), customSubs)
 	
 	def doSubstitutions(self, subs, *cSubs):
 		''' Performs % subsitutions on the given string '''
@@ -56,7 +56,7 @@ class Phrasebook:
 				elif subs[c] == 'E':
 					modSt += ('@everyone')
 				elif subs[c] == 't':
-					modSt += (datetime.strftime('%H:%M:%S'))
+					modSt += (datetime.now().strftime('%H:%M:%S'))
 				elif subs[c] == 'T':
 					modSt += (datetime.now().strftime('%H:%M:%S on %A, %d %B, %Y'))
 				elif subs[c] == 'i':

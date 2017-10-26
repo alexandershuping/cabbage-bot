@@ -34,6 +34,13 @@ class CabbageBase:
 
 		return cur
 	
+	def query2Filter(self, table, elem, val, elem2, val2):
+		''' Returns rows from the given table using the given filters '''
+		cur = self.cdb.cursor()
+		cur.execute(sql.SQL('SELECT * FROM {} WHERE {} = %s AND {} = %s').format(sql.Identifier(table), sql.Identifier(elem), sql.Identifier(elem2)), (val,val2))
+
+		return cur
+	
 	def commit(self):
 		''' Commits a transaction '''
 		if not self.opened:

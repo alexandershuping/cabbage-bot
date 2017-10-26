@@ -1,0 +1,29 @@
+[
+	{
+		"module" : "roller",
+		"phrases" : {
+			"test" : [
+				"Cabbage Roller is ONLINE!"
+			],
+			"ack" : [
+				"I think I have some d%2s around here somewhere..."
+			],
+			"out" : [
+				"That's a %1, %u.",
+				"I think that comes out to %1. Be warned, I have problems with multiplication and division sometimes.",
+				"Looks like %1.",
+				"Have a %1, %u",
+				"Total is %1, %u"
+			],
+			"difference" : [
+				"I'm not sure, but I think that means %1d%2 %3 %4."
+			],
+			"invalid" : [
+				"Umm... I don't know what you mean by %1. Sorry, %u."
+			],
+			"invalidAngry" : [
+				"Wait, what? That isn't even a valid die! I mean, seriously, %1? You want me to roll %1 for you. Can you kindly explan how I would roll a %1? How many sides does %1 even have? Who do you think I am, %u?!"
+			]
+		}
+	}
+]

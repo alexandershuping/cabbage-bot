@@ -1,5 +1,5 @@
 # Phrasebook-related tables
 
 # Phrasebook -- holds all responses, using the format described in README-Phrasebook.md
-Phrasebook (context TEXT, phrase TEXT)
+Phrasebook (module TEXT, context TEXT, phrase TEXT)
 

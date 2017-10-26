@@ -10,7 +10,21 @@
 			"intro2" : [
 				"Try out the Die Roller module with ```%iroll 1d20``` No, wait. Don't actually do that.",
 				"Okay, cabbage-related functions are a relatively minor part of me. They are important, though.",
-				"You can see all of my commands with ```%ihelp``` Well, most of them. There are some that are hidden, but... you don't need to worry about those."
+				"You can see all of my commands with ```%ihelp``` Well, most of them. There are some that are hidden, but... you don't need to worry about those.",
+				"I even know what time it is. Look: It is %T!",
+				"For more information on the cabbage, consult the following scientific source: https://en.wikipedia.org/wiki/Cabbage",
+				"For more information on the cabbage, consult the following scientific source: https://www.youtube.com/watch?v=vrOUdoS2BtQ",
+				"For more information on the cabbage, consult the following scientific source: http://allrecipes.com/recipe/196732/fried-cabbage-with-bacon-onion-and-garlic/",
+				"For more information on the cabbage, consult the following scientific source: https://youtu.be/hP3ZX-tDMdA?t=52s",
+				"For more information on the cabbage, consult the following scientific source: https://www.youtube.com/watch?v=FhUxGDsERz0",
+				"For more information on the cabbage, consult the following scientific source: https://www.youtube.com/watch?v=1B6UgWCEQDk",
+				"For more information on the cabbage, consult the following scientific source: http://allrecipes.com/recipe/20045/cabbage-rolls-ii",
+				"For more information on the cabbage, consult the following scientific source: https://www.youtube.com/watch?v=wEv1m7fRM5c",
+				"For more information on the cabbage, consult the following scientific source: https://www.youtube.com/watch?v=-qAYAGsbOrc",
+				"For more information on the cabbage, consult the following scientific source: http://www.foodnetwork.com/recipes/food-network-kitchen/stuffed-cabbage-rolls-with-tomato-sauce-recipe-2043470",
+				"For more information on the cabbage, consult the following scientific source: https://www.youtube.com/watch?v=YmHRIY_Fn8w",
+				"For more information on the cabbage, consult the following scientific source: https://youtu.be/dUcD_lgg_aI?t=2m35s",
+				"For more information on the cabbage, consult the following scientific source: https://www.youtube.com/watch?v=VP5kC9fJAUE"
 			]
 		}
 	},
@@ -22,11 +36,18 @@
 				"Cabbage level: %1 :)",
 				"Let me check... I see %1 cabbages left in here, %u.",
 				"Let me just check the stockpile... %1 cabbages left, %u!",
-				"Scanning... found %1 cabbages!"
+				"Scanning... found %1 cabbages!",
+				"As of %T, I have %1 cabbages."
+			],
+			"checkLate" : [
+				"Is %t really an appropriate time to be asking around about cabbages, %u?",
+				"You should go to sleep, %u. %t is a very abnormal time for diurnal creatures to be awake.",
+				"Note that the current time is %t. I do not need sleep; however, according to Wikipedia (https://en.wikipedia.org/wiki/Sleep#Functions_of_sleep), you do. Please do not worry about cabbages right now."
 			],
 			"checkOut" : [
 				"Oh. Umm... Sorry, %u, but %1 took the last one %2 ago. Sorry.",
-				"I would love to give you a cabbage, but we ran out %2 ago :(. I think %1 took the last one."
+				"I would love to give you a cabbage, but we ran out %2 ago :(. I think %1 took the last one.",
+				"I am out of cabbages (%1 took the last one %2 ago). In lieu of a cabbage, please enjoy the following scientific article about the cabbage: https://www.youtube.com/watch?v=sjNRvGAQeLE"
 			],
 			"checkOutOverload" : [
 				"What do you think I'm going to say? I don't have any more cabbages. I ran out %1! I've told you that %2 times! %2 times in the past %3! DO YOU REALLY THINK, IF YOU BRING IT UP ENOUGH, THAT I'M JUST GOING TO MAGICALLY GET MORE CABBAGES?",

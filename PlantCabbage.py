@@ -93,7 +93,7 @@ def updatePhrasebook(con):
 						else:
 							shortPhrase = phrase
 						rc.pcmd('      >>INSERT INTO phrasebook (' + context + ', ' + shortPhrase + ');')
-						cur.execute('INSERT INTO phrasebook (context, phrase) VALUES (%s, %s);', (context, phrase))
+						cur.execute('INSERT INTO phrasebook (module, context, phrase) VALUES (%s, %s, %s);', (module['module'], context, phrase))
 	cdb.commit()
 	rc.pinfo('Done.')
 
