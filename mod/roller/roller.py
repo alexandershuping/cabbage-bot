@@ -12,6 +12,20 @@ class Roller:
 	def __init__(self, bot):
 		self.bot = bot
 	
+	@commands.command(pass_context=True)
+	async def rate(self, ctx):
+		''' Rates content using a complex algorithm '''
+		p = Phrasebook(ctx, self.bot)
+		r = random.randrange(9)
+		ms = ""
+		for i in range(0,8):
+			if i <= r:
+				ms = ms + '★'
+			else:
+				ms = ms + '☆'
+
+		await self.bot.say(p.pickPhrase('roller', 'rate', ms))
+
 	@commands.command(hidden=True, pass_context=True)
 	async def rollerTest(self, ctx):
 		''' Test Command '''

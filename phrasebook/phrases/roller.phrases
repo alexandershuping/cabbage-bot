@@ -23,6 +23,11 @@
 			],
 			"invalidAngry" : [
 				"Wait, what? That isn't even a valid die! I mean, seriously, %1? You want me to roll %1 for you. Can you kindly explan how I would roll a %1? How many sides does %1 even have? Who do you think I am, %u?!"
+			],
+			"rate" : [
+				"Gr8 m8 I r8 %1/8",
+				"All I can say is, %1",
+				"I'd give it a %1"
 			]
 		}
 	}
