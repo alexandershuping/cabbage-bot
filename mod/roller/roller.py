@@ -25,7 +25,8 @@ class Roller:
 				ms = ms + '☆'
 
 		await self.bot.say(p.pickPhrase('roller', 'rate', ms))
-
+		await self.bot.delete_message(ctx.message)
+	
 	@commands.command(hidden=True, pass_context=True)
 	async def rollerTest(self, ctx):
 		''' Test Command '''
