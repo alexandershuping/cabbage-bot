@@ -18,10 +18,10 @@ This can be done in one step by running `pip install -U -r pyreqs`
 ### Programs / Non-Python Libraries
 Make sure to install these before you try installing the libraries below.
 * Recommended Python version: 3.5.2
-* [PostgreSQL][https://www.postgresql.org/]
+* [PostgreSQL](https://www.postgresql.org/)
 
 ### Python libraries
 Note that these libraries can be installed automatically by running `pip install -U -r pyreqs`
 If the command fails with `Error: pg_config executable not found`, then you may not have installed postgresql. Please install all non-python-library components before trying to install the below libraries.
-* [discord.py][https://github.com/Rapptz/discord.py]
-* [Psycopg2][https://github.com/psycopg/psycopg2]
+* [discord.py](https://github.com/Rapptz/discord.py)
+* [Psycopg2](https://github.com/psycopg/psycopg2)
