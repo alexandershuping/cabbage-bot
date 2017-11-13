@@ -2,6 +2,7 @@ import psycopg2
 import sys
 import os
 import json
+import eyed3.mp3 as eyeD3
 import cabbagerc as rc
 
 cdb = psycopg2.connect(dbname=rc.DBNAME, user=rc.DBUSERNAME, password=rc.DBPASSWORD, host=rc.DBHOST, port=rc.DBPORT)
@@ -34,6 +35,7 @@ def initialize():
 		makeTable(tname, cur)
 	rc.pinfo('Database initialized successfully.')
 	updatePhrasebook(cdb)
+	updateSongbook(cdb)
 
 def makeTable(tname, cur):
 	rc.pinfo('Parsing tables from ' + tname.strip())
@@ -94,10 +96,61 @@ def updatePhrasebook(con):
 							shortPhrase = phrase
 						rc.pcmd('      >>INSERT INTO phrasebook (' + context + ', ' + shortPhrase + ');')
 						cur.execute('INSERT INTO phrasebook (module, context, phrase) VALUES (%s, %s, %s);', (module['module'], context, phrase))
-	cdb.commit()
+	con.commit()
 	rc.pinfo('Done.')
 
-		
+
+def updateSongbook(con):
+	cur = con.cursor()
+	try:
+		cur.execute('SELECT * FROM songbook;')
+	except psycopg2.ProgrammingError:
+		con.rollback()
+		rc.perr('It looks like the songbook table hasn\'t been created. Did you try initializing the database first?')
+		return
+
+	cur.execute('SELECT * FROM songbook;')
+	if not cur.fetchone() == None:
+		rc.pwarn('It looks like the songbook table is already populated. I will delete it and re-populate from sql/tables/songbook.tables.')
+		rc.pcmd('  >>DROP TABLE songbook;')
+		cur.execute('DROP TABLE songbook;')
+		makeTable('./sql/tables/songbook.tables', cur)
+	
+	rc.pinfo('Table is initialized. Scanning library for songs and metadata...')
+	songs = []
+	for dirname, dirnames, filenames in os.walk('./music'):
+		for filename in filenames:
+			rc.pcmd('  >>examining ' + dirname + '/' + filename)
+			if not '.mp3' in filename or not eyeD3.Mp3AudioFile(dirname + '/' + filename).tag:
+				rc.pwarn('File "' + str(filename) + '" is not valid mp3')
+			else:
+				tag = eyeD3.Mp3AudioFile(dirname + '/' + filename).tag
+				name = tag.title
+				album = tag.album
+				artist = tag.artist
+				if not name:
+					rc.perr('Song at ' + dirname + '/' + filename + ' has no title! Discarding.')
+					continue
+				if not album:
+					rc.pwarn('Caution: ' + tag.title + ' has no album information.')
+					album = ''
+				if not artist:
+					rc.pwarn('Caution: ' + tag.title + ' has no artist information.')
+					artist = ''
+				rc.pcmd('  >>found "' + name + '" at ' + dirname + '/' + filename)
+				songs.append({'name':name.lower(), 'album':album.lower(), 'artist':artist.lower(), 'path':dirname + '/' + filename})
+
+	rc.pinfo('Done. Adding to database...')
+	for song in songs:
+		if not song:
+			continue
+		cphr = song['name'] + ', ' + song['album'] + ', ' + song['artist'] + ', ' + song['path']
+		if len(cphr) > 50:
+			cphr = cphr[:50] + '...'
+		rc.pcmd('  >>INSERT INTO songbook (' + cphr + ');')
+		cur.execute('INSERT INTO songbook (name, album, artist, path) VALUES (%s, %s, %s, %s);', (song['name'], song['album'], song['artist'], song['path']))
+		con.commit()
+	rc.pinfo('Done.')
 
 def queryTF(prompt):
 	while True:
@@ -129,6 +182,8 @@ else:
 			cdb.commit()
 		elif arg.upper() == 'PHRASES' or arg.upper() == 'PHRASEBOOK':
 			updatePhrasebook(cdb)
+		elif arg.upper() == 'SONGS' or arg.upper() == 'SONGBOOK':
+			updateSongbook(cdb)
 		else:
 			rc.pwarn('Unknown command "' + arg + '"')
 

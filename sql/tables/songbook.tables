@@ -1,0 +1,4 @@
+# Songbook-related tables
+
+# Songbook -- holds the song list, including names, albums, artists, and file paths
+Songbook (name TEXT, album TEXT, artist TEXT, path TEXT)

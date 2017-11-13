@@ -8,15 +8,19 @@ cabbageNumber = 2
 cabbageStealer = 0
 cabbageTheftTime = 0
 
-description = '''Bot That Performs Cabbage-Related Functions'''
+description = cabbagerc.DESC
 bot = commands.Bot(command_prefix=cabbagerc.PREF, description=description)
 modules = [
-	'mod.roller.roller'
+	'mod.roller.roller',
+	'mod.DJCabbi.DJCabbi'
 ]
 
 def autoset():
 	''' Setup functions '''
 	global modules
+
+	discord.opus.load_opus(cabbagerc.OPUS_LOC)
+
 	for mod in modules:
 		bot.load_extension(mod)
 

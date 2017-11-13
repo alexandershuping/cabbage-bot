@@ -1,15 +1,50 @@
 # Example Local Configuration File for CabbageBot
 # Change this configuration file to match your local installation.
 
+##################
+### Authentication
+##################
+## Discord
+
+# Authentication token
 TKN = 'TOKEN GOES HERE'
+
+# Command prefix (e.g. '!cabbage ')
 PREF = 'PREFIX GOES HERE'
+
+# Bot Description
+DESC = 'Performs vital cabbage-related functions'
+
+## Voice
+
+# Location of the OPUS library for voice functionality
+OPUS_LOC='libopus.so.0'
+
+## SQL
+
+# Name of the SQL database to connect to
 DBNAME = 'cabbage'
+
+# Username for above
 DBUSERNAME = 'cabbage'
+
+# Password for above
 DBPASSWORD = 'PASSWORD GOES HERE'
+
+# Host and port for above
 DBHOST = 'localhost'
 DBPORT = '5432'
 
-# Color settings
+##################
+### Module Options
+##################
+## Walk
+
+# Probability of a random encounter, per move
+WALKPRAND = 0.2
+
+### Graphics
+## Color settings
 
 cClear = '\033[0m'
 cInfo = '\033[38;5;27m'
