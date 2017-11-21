@@ -74,7 +74,7 @@ def updatePhrasebook(con):
 	phrasefiles = []
 	for dirname, dirnames, filenames in os.walk('./phrasebook/phrases'):
 		for filename in filenames:
-			if '.phrases' in filename:
+			if '.phrases' in filename and not '.swp' in filename:
 				rc.pcmd('  >>found ' + dirname + '/' + filename)
 				phrasefiles.append(dirname + '/' + filename)
 	rc.pinfo('Done. Reading phrasefiles and adding to database...')
