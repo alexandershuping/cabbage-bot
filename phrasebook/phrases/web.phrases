@@ -1,6 +1,6 @@
 [
 	{
-		"module" : "trump",
+		"module" : "timeout",
 		"phrases" : {
 			"timeout" : [
 				"The %1 API at %2 is slow right now. Try again later.",

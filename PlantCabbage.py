@@ -34,6 +34,7 @@ def initialize():
 		makeTable(tname, cur)
 	rc.pinfo('Database initialized successfully.')
 	updatePhrasebook(cdb)
+	genDat()
 
 def makeTable(tname, cur):
 	rc.pinfo('Parsing tables from ' + tname.strip())
@@ -97,6 +98,23 @@ def updatePhrasebook(con):
 	cdb.commit()
 	rc.pinfo('Done.')
 
+
+def genDat():
+	rc.pinfo('Reading directory setup files...')
+	dirfiles = []
+	for dirname, dirnames, filenames in os.walk('./setup/dir'):
+		for filename in filenames:
+			if not '.swp' in filename:
+				rc.pcmd('  >>found ' + dirname + '/' + filename)
+				dirfiles.append(dirname + '/' + filename)
+	for dirfile in dirfiles:
+		rc.pinfo('  in file ' + dirfile.strip())
+		with open(dirfile.strip()) as dirs:
+			for line in dirs:
+				line = line.strip()
+				rc.pinfo('    >>' + line)
+				os.makedirs(line, exist_ok=True)
+
 		
 
 def queryTF(prompt):
@@ -129,6 +147,8 @@ else:
 			cdb.commit()
 		elif arg.upper() == 'PHRASES' or arg.upper() == 'PHRASEBOOK':
 			updatePhrasebook(cdb)
+		elif arg.upper() == 'DIRS' or arg.upper() == 'DIRECTORIES':
+			genDat()
 		else:
 			rc.pwarn('Unknown command "' + arg + '"')
 
