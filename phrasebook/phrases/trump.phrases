@@ -15,6 +15,9 @@
 			],
 			"cat" : [
 				"Cat at %1 can be found at %2"
+			],
+			"mycat_dl" : [
+				"I don't have your cat saved in here. Please hold tight while I go get it."
 			]
 		}
 	}

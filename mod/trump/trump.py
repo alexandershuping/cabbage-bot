@@ -2,7 +2,10 @@ import random
 import re
 import discord
 import requests
+import urllib.request
+import os.path
 from lxml import etree
+from urllib import parse
 from discord.ext import commands
 from phrasebook.Phrasebook import Phrasebook
 
@@ -23,7 +26,7 @@ class Trump:
 				s = ''
 				for t in target:
 					s = s + t + ' '
-				r = requests.get('https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q=' + s.rstrip())
+				r = requests.get('https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q=' + parse.quote(s.rstrip()))
 			else:
 				r = requests.get('https://api.whatdoestrumpthink.com/api/v1/quotes/random')
 		except ConnectionError:
@@ -56,6 +59,21 @@ class Trump:
 		source = doc.findtext('data/images/image/source_url')
 		lnk = doc.findtext('data/images/image/url')
 		await self.bot.say(p.pickPhrase('trump', 'cat', lnk, source))
+	
+	@commands.command(pass_context=True)
+	async def mycat(self, ctx):
+		''' Display a cat, generated just for you '''
+		p = Phrasebook(ctx, self.bot)
+		name = ctx.message.author.name
+		if not os.path.isfile('./dat/mycat/' + parse.quote(name) + '.png'):
+			await self.bot.say(p.pickPhrase('trump', 'mycat_dl'))
+			imgpath = parse.quote(name) + '.png'
+			urllib.request.urlretrieve( \
+			parse.urlunparse(('http', 'robohash.org', imgpath, '', 'set=set4', '')), \
+			'./dat/mycat/' + imgpath
+			)
+
+		await self.bot.send_file(ctx.message.channel, './dat/mycat/' + parse.quote(name) + '.png')
 	
 def setup(bot):
 	bot.add_cog(Trump(bot))
