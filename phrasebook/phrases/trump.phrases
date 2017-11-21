@@ -1,0 +1,21 @@
+[
+	{
+		"module" : "trump",
+		"phrases" : {
+			"trump" : [
+				"If the US president were here, he may say something like this: ```%1```",
+				"If the US president were here, he may say something like this: ```%1```",
+				"If the US president were here, he may say something like this: ```%1```",
+				"If the US president were here, he may say something like this: ```%1```",
+				"SILENCE! A message from the president! A message from the president! A MESSAGE FROM! THE! PRESIDEEENNNTTT! ```%1```",
+				"Are you sure this is a good source? People keep telling me to find quotes from this guy, but I mean... just look at this one: ```%1```"
+			],
+			"dog" : [
+				"Here's a dog: %1"
+			],
+			"cat" : [
+				"Cat at %1 can be found at %2"
+			]
+		}
+	}
+]

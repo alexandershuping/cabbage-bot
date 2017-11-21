@@ -11,7 +11,8 @@ cabbageTheftTime = 0
 description = '''Bot That Performs Cabbage-Related Functions'''
 bot = commands.Bot(command_prefix=cabbagerc.PREF, description=description)
 modules = [
-	'mod.roller.roller'
+	'mod.roller.roller',
+	'mod.trump.trump'
 ]
 
 def autoset():
@@ -105,6 +106,8 @@ Be careful, though: once the cabbages are gone, they're gone until I restart. ''
 		cabbageTheftTime = datetime.now()
 	else:
 		await bot.say(p.pickPhrase('cabbage', 'checkOut', cabbageStealer.name, timeStrSince(cabbageTheftTime)))
+
+
 
 autoset()
 bot.run(cabbagerc.TKN)
