@@ -12,7 +12,8 @@ description = '''Bot That Performs Cabbage-Related Functions'''
 bot = commands.Bot(command_prefix=cabbagerc.PREF, description=description)
 modules = [
 	'mod.roller.roller',
-	'mod.trump.trump'
+	'mod.trump.trump',
+	'mod.admin.admin'
 ]
 
 def autoset():
