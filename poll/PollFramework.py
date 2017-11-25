@@ -1,0 +1,208 @@
+import random
+import sys
+import re
+from sql.cabbagebase import CabbageBase
+import cabbagerc as rc
+
+class PollFramework:
+	''' Backend tasks for polls '''
+	def __init__(self, creator, server, name=None, description=None, openTime=None, closeTime=None, absoluteThreshold=None, percentThreshold=None, percentThresholdMinimum=None, thresholdTime=None):
+		self.base = CabbageBase()
+		self.creator = creator
+		self.server = server
+		self.name = name
+		self.description = description
+		self.openTime = openTime
+		self.closeTime = closeTime
+		self.absoluteThreshold = absoluteThreshold
+		self.percentThreshold = percentThreshold
+		self.percentThresholdMinimum = percentThresholdMinimum
+		self.thresholdTime = thresholdTime
+		self.options = {'short':[], 'long':[], 'emoji':[]}
+		self.genPollid()
+		self.update()
+	
+	@classmethod
+	def fromSQL(cls, queryRow):
+		return cls(*queryRow)
+	
+	def genPollid(self):
+		#while True:
+		propPollid = random.randint(-1*sys.maxsize, sys.maxsize)
+		# This checks for the infinitesimal (1/(2*sys.maxsize+1) ~= 0) chance
+		# of an id conflict. Uncomment if it ever becomes a problem. It shouldn't.
+		#	if not self.base.isPresentIn('pollid', propPollid, 'polls'):
+		#		break
+		self.pollid = propPollid
+		self.update()
+
+	def setName(self,name):
+		self.name = name
+		self.update()
+	
+	def setDescription(self, desc):
+		self.description = desc
+		self.update()
+	
+	def setOpenTime(self, openTime):
+		self.openTime = openTime
+		self.update()
+	
+	def setCloseTime(self, closeTime):
+		self.closeTime = closeTime
+		self.update()
+	
+	def setAbsoluteThreshold(self, absThreshold):
+		self.absoluteThreshold = absThreshold
+		self.update()
+	
+	def setPercentThreshold(self, percThreshold):
+		self.percentThreshold = percThreshold
+		self.update()
+	
+	def setPercentThresholdMinimum(self, percThresholdMin):
+		self.percentThresholdMinimum = percThresholdMin
+		self.update()
+	
+	def setThresholdTime(self, threshTime):
+		self.thresholdTime = threshTime
+		self.update()
+	
+	def addOption(self, shortOption, longOption, emojiOption=None):
+		self.options['short'].append(shortOption)
+		self.options['long'].append(longOption)
+		if emojiOption:
+			if re.match('<:.+:[0-9]+>', emojiOption):
+				self.options['emoji'].append(emojiOption[-1:1])
+			else:
+				self.options['emoji'].append(emojiOption[0])
+		else:
+			self.options['emoji'].append(None)
+		self.update()
+	
+	def get(self):
+		return {'creator':self.creator, 'server':self.server, 'name':self.name, 'description':self.description, 'pollid':self.pollid, 'openTime':self.openTime, 'closeTime':self.closeTime, 'absoluteThreshold':self.absoluteThreshold, 'percentThreshold':self.percentThreshold, 'percentThresholdMinimum':self.percentThresholdMinimum, 'thresholdTime':self.thresholdTime, 'options':self.options}
+
+	def vote(self, user, shortOption):
+		''' Registers a vote from a user by short option '''
+		cmd = 'DELETE FROM ONLY votes WHERE voterid = %s AND pollid = %s;'
+		cur = self.base.getCursor()
+		cur.execute(cmd, (user, self.pollid))
+		res = self.base.query('polls', ('shortoptions',), (('pollid', self.pollid),))
+		if shortOption not in res[0][0]:
+			return False
+		
+		cmd = 'INSERT INTO votes (voterid, pollid, voteTime, vote) VALUES (%s,%s,%s,%s)'
+		cur.execute(cmd, (user, self.pollid, datetime.now(), shortOption))
+		return True
+		
+	def voteEmoji(self, user, emojiOption):
+		''' Registers a votefrom a user by emoji option '''
+		cmd = 'DELETE FROM ONLY votes WHERE voterid = %s AND pollid = %s;'
+		cur = self.base.getCursor()
+		cur.execute(cmd, (user, self.pollid))
+		res = self.base.query('polls', ('shortoptions','emojioptions'), (('pollid', self.pollid),))
+		shortEq = None
+		for short, emoji in res[0]:
+			if emoji == emojiOption:
+				shortEq = short
+
+		if not shortEq:
+			# User voted with invalid emoji. Bad user.
+			return False;
+		
+		cmd = 'INSERT INTO votes (voterid, pollid, voteTime, vote) VALUES (%s,%s,%s,%s)'
+		cur.execute(cmd, (user, self.pollid, datetime.now(), shortEq))
+		return True
+	
+	def getVoteDetails(self):
+		''' Retrieves all votes from the SQL database '''
+		return self.base.query('votes', ('voterid', 'pollid', 'votetime', 'vote'), (('pollid', self.pollid),))
+	
+	def getVoteTotals(self):
+		''' Retrieves the total number of votes for each option '''
+		counts = {};
+		cur = self.base.getCursor()
+		for option in self.options['short']:
+			cur.execute('SELECT * FROM votes WHERE pollid = %s AND vote = %s', (self.pollid, option))
+			counts[option] = cur.rowcount
+		cur.close()
+		return counts
+	
+	def update(self):
+		''' Update the SQL database to reflect changes to the object '''
+		cur = self.base.getCursor()
+		table = 'polls'
+		execString = '(creatorid, serverid, name, description, pollid, openTime, closeTime, absoluteThreshold, percentThreshold, percentThresholdMinimum, thresholdTime, shortOptions, longOptions, emojiOptions)'
+		valString = '(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+		caveat = 'WHERE pollid=' + str(self.pollid)
+		constructed = 'UPDATE ONLY ' + table + ' SET ' + execString + ' = ' + valString + caveat + ';'
+		print(str(cur.mogrify( \
+			constructed, \
+				(self.creator, \
+				self.server, \
+				self.name, \
+				self.description, \
+				self.pollid, \
+				self.openTime, \
+				self.closeTime, \
+				self.absoluteThreshold, \
+				self.percentThreshold, \
+				self.percentThresholdMinimum, \
+				self.thresholdTime, \
+				self.options['short'], \
+				self.options['long'], \
+				self.options['emoji'] \
+				)\
+			)))
+		cur.execute( \
+			constructed, \
+				(self.creator, \
+				self.server, \
+				self.name, \
+				self.description, \
+				self.pollid, \
+				self.openTime, \
+				self.closeTime, \
+				self.absoluteThreshold, \
+				self.percentThreshold, \
+				self.percentThresholdMinimum, \
+				self.thresholdTime, \
+				self.options['short'], \
+				self.options['long'], \
+				self.options['emoji'] \
+				)\
+			)
+
+		if cur.statusmessage == 'UPDATE 0':
+			# This is a new poll; insert it into the table
+			constructed = 'INSERT INTO ' + table + execString + ' VALUES ' + valString + ';'
+			cur.execute( \
+				constructed, \
+					(self.creator, \
+					self.server, \
+					self.name, \
+					self.description, \
+					self.pollid, \
+					self.openTime, \
+					self.closeTime, \
+					self.absoluteThreshold, \
+					self.percentThreshold, \
+					self.percentThresholdMinimum, \
+					self.thresholdTime, \
+					self.options['short'], \
+					self.options['long'], \
+					self.options['emoji'] \
+					)\
+				)
+			rc.pinfo('Created new poll with pollid ' + str(self.pollid))
+			self.base.commit()
+		elif cur.statusmessage != 'UPDATE 1':
+			rc.perr('Rolling back UPDATE command for Poll object due to abnormal response -- check for multiple polls with the same pollid: ' + str(self.pollid) + ' (returned message: ' + str(cur.statusmessage) + ')')
+			self.base.rollback()
+		else:
+			# Normal response; safe to commit
+			self.base.commit()
+
+		# Either way, release the database hold
+		cur.close()
