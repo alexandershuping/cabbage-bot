@@ -2,11 +2,12 @@ import random
 import sys
 import re
 from sql.cabbagebase import CabbageBase
+from datetime import datetime, timedelta
 import cabbagerc as rc
 
 class PollFramework:
 	''' Backend tasks for polls '''
-	def __init__(self, creator, server, name=None, description=None, openTime=None, closeTime=None, absoluteThreshold=None, percentThreshold=None, percentThresholdMinimum=None, thresholdTime=None):
+	def __init__(self, creator, server, name=None, description=None, openTime=None, closeTime=None, absoluteThreshold=None, percentThreshold=None, percentThresholdMinimum=None, thresholdTime=None, keepUpdated=True, pollid=None):
 		self.base = CabbageBase()
 		self.creator = creator
 		self.server = server
@@ -19,12 +20,24 @@ class PollFramework:
 		self.percentThresholdMinimum = percentThresholdMinimum
 		self.thresholdTime = thresholdTime
 		self.options = {'short':[], 'long':[], 'emoji':[]}
-		self.genPollid()
+		self.keepUpdated = keepUpdated
+		if pollid:
+			self.pollid = pollid
+		else:
+			self.genPollid()
 		self.update()
 	
 	@classmethod
 	def fromSQL(cls, queryRow):
-		return cls(*queryRow)
+		print('Building pollid ' + str(queryRow[0]) + ' from SQL row')
+		working = cls(queryRow[1], queryRow[2], queryRow[3], queryRow[4], queryRow[5], queryRow[6], queryRow[7], queryRow[8], queryRow[9], queryRow[10], keepUpdated=False, pollid=queryRow[0])
+		opts = []
+		for i in range(0,len(queryRow[11])):
+			working.addOption(queryRow[11][i], queryRow[12][i], queryRow[13][i])
+		working.setUpdate(True)
+		print('Built pollid ' + str(queryRow[0]))
+		return working
+
 	
 	def genPollid(self):
 		#while True:
@@ -68,6 +81,9 @@ class PollFramework:
 		self.thresholdTime = threshTime
 		self.update()
 	
+	def setUpdate(self, keepUp):
+		self.keepUpdated = keepUp
+	
 	def addOption(self, shortOption, longOption, emojiOption=None):
 		self.options['short'].append(shortOption)
 		self.options['long'].append(longOption)
@@ -80,21 +96,68 @@ class PollFramework:
 			self.options['emoji'].append(None)
 		self.update()
 	
+	def addTrackingMessage(self, messid, chanid):
+		''' Add a message to the list of tracked messages '''
+		res = self.base.query('activemessages', filters=(('messid', int(messid)), ('chanid', int(chanid))))
+		if res and len(res) > 0:
+			# This message is already registered
+			return False
+		cmd = 'INSERT INTO activemessages (messid, chanid, pollid) VALUES (%s,%s,%s)'
+		cur = self.base.getCursor()
+		cur.execute(cmd, (int(messid), int(chanid), self.pollid))
+		self.base.commit()
+		cur.close()
+		return True
+	
+	def delTrackingMessage(self, messid, chanid):
+		''' Remove a message from the list of tracked messages '''
+		res = self.base.query('activemessages', filters=(('messid', int(messid)), ('chanid', int(chanid))))
+		if not res or len(res) == 0:
+			# Message not found
+			return False
+		cmd = 'DELETE FROM ONLY activemessages WHERE messid = %s AND chanid = %s'
+		cur = self.base.getCursor()
+		cur.execute(cmd, (messid, chanid))
+		self.base.commit()
+		cur.close()
+		return True
+	
+	def getTrackingMessages(self):
+		''' Return all messages that are supposed to be updated '''
+		res = self.base.query('activemessages', ('messid','chanid','pollid'))
+		processed = []
+		for result in res:
+			# Convert to dict for convenience
+			processed.append({'messid':result[0],'chanid':result[1],'pollid':result[2]})
+		return processed
+	
 	def get(self):
+		''' Return a dictionary containing all of the relevant poll parameters
+		    (i.e. everything except votes and tracking messages)
+		'''
 		return {'creator':self.creator, 'server':self.server, 'name':self.name, 'description':self.description, 'pollid':self.pollid, 'openTime':self.openTime, 'closeTime':self.closeTime, 'absoluteThreshold':self.absoluteThreshold, 'percentThreshold':self.percentThreshold, 'percentThresholdMinimum':self.percentThresholdMinimum, 'thresholdTime':self.thresholdTime, 'options':self.options}
 
 	def vote(self, user, shortOption):
 		''' Registers a vote from a user by short option '''
+		res = self.base.query('polls', ('shortoptions','opentime','closetime'), (('pollid', self.pollid),))
+
+		curTime = datetime.now()
+		if curTime - res[0][1] < timedelta(seconds=0) or curTime - res[0][2] > timedelta(seconds=0):
+			return 2 # Poll is closed
+
 		cmd = 'DELETE FROM ONLY votes WHERE voterid = %s AND pollid = %s;'
 		cur = self.base.getCursor()
 		cur.execute(cmd, (user, self.pollid))
-		res = self.base.query('polls', ('shortoptions',), (('pollid', self.pollid),))
 		if shortOption not in res[0][0]:
-			return False
+			self.base.rollback()
+			cur.close()
+			return 1 # Invalid option
 		
 		cmd = 'INSERT INTO votes (voterid, pollid, voteTime, vote) VALUES (%s,%s,%s,%s)'
 		cur.execute(cmd, (user, self.pollid, datetime.now(), shortOption))
-		return True
+		self.base.commit()
+		cur.close()
+		return 0 # OK
 		
 	def voteEmoji(self, user, emojiOption):
 		''' Registers a votefrom a user by emoji option '''
@@ -103,17 +166,17 @@ class PollFramework:
 		cur.execute(cmd, (user, self.pollid))
 		res = self.base.query('polls', ('shortoptions','emojioptions'), (('pollid', self.pollid),))
 		shortEq = None
-		for short, emoji in res[0]:
-			if emoji == emojiOption:
-				shortEq = short
+		for dex, shortOpt in enumerate(res[0][0]):
+			if res[0][1][dex] == emojiOption:
+				shortEq = shortOpt
 
 		if not shortEq:
 			# User voted with invalid emoji. Bad user.
-			return False;
+			self.base.rollback()
+			cur.close()
+			return 1;
 		
-		cmd = 'INSERT INTO votes (voterid, pollid, voteTime, vote) VALUES (%s,%s,%s,%s)'
-		cur.execute(cmd, (user, self.pollid, datetime.now(), shortEq))
-		return True
+		return self.vote(user, shortEq)
 	
 	def getVoteDetails(self):
 		''' Retrieves all votes from the SQL database '''
@@ -131,6 +194,9 @@ class PollFramework:
 	
 	def update(self):
 		''' Update the SQL database to reflect changes to the object '''
+		if not self.keepUpdated:
+			print('Ignoring update request')
+			return # Update only functions if the object has keepUpdated set true
 		cur = self.base.getCursor()
 		table = 'polls'
 		execString = '(creatorid, serverid, name, description, pollid, openTime, closeTime, absoluteThreshold, percentThreshold, percentThresholdMinimum, thresholdTime, shortOptions, longOptions, emojiOptions)'
