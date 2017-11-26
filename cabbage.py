@@ -13,7 +13,8 @@ bot = commands.Bot(command_prefix=cabbagerc.PREF, description=description)
 modules = [
 	'mod.roller.roller',
 	'mod.trump.trump',
-	'mod.admin.admin'
+	'mod.admin.admin',
+	'mod.poll.poll'
 ]
 
 def autoset():

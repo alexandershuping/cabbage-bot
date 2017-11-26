@@ -1,0 +1,10 @@
+# Poll-related tables
+
+# Vote table
+Votes (voterid BIGINT, pollid BIGINT, voteTime TIMESTAMP, vote TEXT)
+
+# Poll table
+Polls (pollid BIGINT PRIMARY KEY, creatorid BIGINT, serverid BIGINT, name TEXT, description TEXT, openTime TIMESTAMP, closeTime TIMESTAMP, absoluteThreshold INTEGER, percentThreshold REAL, percentThresholdMinimum INTEGER, thresholdTime TIMESTAMP, shortOptions TEXT[], longOptions TEXT[], emojiOptions TEXT[])
+
+# Active Message table
+ActiveMessages (messid BIGINT, chanid BIGINT, pollid BIGINT)
