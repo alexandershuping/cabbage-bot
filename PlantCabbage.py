@@ -8,10 +8,12 @@ cdb = psycopg2.connect(dbname=rc.DBNAME, user=rc.DBUSERNAME, password=rc.DBPASSW
 
 module_tables = []
 
+lightMode = False
+
 rc.pinfo('Scanning table lists...')
 for dirname, dirnames, filenames in os.walk('./sql/tables'):
 	for filename in filenames:
-		if '.tables' in filename:
+		if '.tables' in filename and not '.swp' in filename:
 			rc.pcmd('  >>found ' + dirname + '/' + filename)
 			module_tables.append(dirname + '/' + filename)
 rc.pinfo('Done.')
@@ -22,14 +24,17 @@ def initialize():
 	cur = cdb.cursor()
 	cur.execute('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' AND table_schema = \'public\';')
 	if cur.fetchone() != None:
-		rc.pwarn('There\'s already some data in the database. If you continue, it\'ll all be deleted.')
-		if not queryTF('Delete all data and re-initialize?'):
-			rc.pinfo('Aborted.')
-			return
+		if lightMode:
+			rc.pwarn('There\'s already some data in the database, but we are running in LIGHT mode, so I won\'t touch it.')
 		else:
-			rc.pinfo('Alright. Purging...')
-			purge(cur)
-			rc.pinfo('Done. Re-initializing')
+			rc.pwarn('There\'s already some data in the database. If you continue, it\'ll all be deleted.')
+			if not queryTF('Delete all data and re-initialize?'):
+				rc.pinfo('Aborted.')
+				return
+			else:
+				rc.pinfo('Alright. Purging...')
+				purge(cur)
+				rc.pinfo('Done. Re-initializing')
 	for tname in module_tables:
 		makeTable(tname, cur)
 	rc.pinfo('Database initialized successfully.')
@@ -44,8 +49,12 @@ def makeTable(tname, cur):
 				continue
 			if (table.strip())[0] == '#':
 				continue
-			rc.pcmd('	>>CREATE TABLE ' + table.strip() + ';')
-			cur.execute('CREATE TABLE ' + table + ';')
+			cur.execute('SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' AND table_schema = \'public\' AND table_name = \'' + table.strip().split('(')[0].strip().lower() + '\';')
+			if cur.fetchone() != None:
+				rc.pwarn(' >>Ignoring already-existing table ' + table.strip())
+			else:
+				rc.pcmd('	>>CREATE TABLE ' + table.strip() + ';')
+				cur.execute('CREATE TABLE ' + table.strip() + ';')
 	
 
 def purge(cur):	
@@ -128,10 +137,9 @@ def queryTF(prompt):
 			rc.pwarn("Unknown response. Please type Y or N")
 
 argc = len(sys.argv)
-if argc == 1:
-	initialize()
-	cdb.commit()
-else:
+didAThing = False
+
+if argc > 1:
 	for arg in sys.argv[1:]:
 		if arg.upper() == "PURGE":
 			rc.pwarn('You\'ve asked to delete all data in the database. I can\'t undo this action.')
@@ -142,14 +150,24 @@ else:
 				rc.pinfo('Done.')
 			else:
 				rc.pinfo('Aborted.')
+			didAThing = True
 		elif arg.upper() == 'INITIALIZE':
 			initialize()
 			cdb.commit()
+			didAThing = True
 		elif arg.upper() == 'PHRASES' or arg.upper() == 'PHRASEBOOK':
 			updatePhrasebook(cdb)
+			didAThing = True
 		elif arg.upper() == 'DIRS' or arg.upper() == 'DIRECTORIES':
 			genDat()
+			didAThing = True
+		elif arg.upper() == 'LIGHT':
+			lightMode = True
 		else:
 			rc.pwarn('Unknown command "' + arg + '"')
+
+if not didAThing:
+	initialize()
+	cdb.commit()
 
 cdb.close()
