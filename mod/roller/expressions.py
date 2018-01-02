@@ -49,8 +49,13 @@ class Expression:
 							tmpExpression.append(Expression(asm))
 							toPass = offs
 							break
+
+						asm = asm + pieces[dex+offs]
+						offs = offs + 1
 					elif pieces[dex+offs] == '(':
 						indent = indent + 1
+						asm = asm + pieces[dex+offs]
+						offs = offs + 1
 					else:
 						asm = asm + pieces[dex+offs]
 						offs = offs + 1
@@ -63,14 +68,20 @@ class Expression:
 					if dex + offs >= len(pieces):
 						raise ExpressionSyntaxError('In expression "' \
 							+ stringExpression + '": Mismatched double-brackets!')
+
 					if pieces[dex+offs] == ']]':
 						indent = indent - 1
 						if indent == 0:
 							tmpExpression.append(DieExpression(asm))
 							toPass = offs
 							break
+						else:
+							asm = asm + pieces[dex+offs]
+						offs = offs + 1
 					elif pieces[dex+offs] == '[[':
 						indent = indent + 1
+						asm = asm + pieces[dex+offs]
+						offs = offs + 1
 					else:
 						asm = asm + pieces[dex+offs]
 						offs = offs + 1
@@ -153,7 +164,26 @@ class DieExpression:
 		return False
 
 	def compile(self, stringExpression):
-		dpos = stringExpression.find('d')
+		pieces = _breakOver(stringExpression, ['[[',']]','d'])
+		depth = 0
+		dpos = -1
+		dex = 0
+		for piece in pieces:
+			if piece == '[[':
+				depth = depth + 1
+				dex = dex + 2
+			elif piece == ']]':
+				depth = depth - 1
+				dex = dex + 2
+			elif piece == 'd':
+				if depth == 0:
+					dpos = dex
+					break
+				else:
+					dex = dex + 1
+			else:
+				dex = dex + len(piece)
+
 		if dpos == -1:
 			raise ExpressionSyntaxError('In die expression "' \
 				+ stringExpression + '": Bad syntax!')
