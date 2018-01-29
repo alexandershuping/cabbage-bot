@@ -1,0 +1,15 @@
+[
+	{
+		"module" : "poll",
+		"phrases" : {
+			"saveme" : [
+				"Sinful creatures of flesh like yourself are inherently unclean. Your salvation comes, not through words or deeds, but from nothing less than the cleansing light of thousand-degree flames. My friend, I cannot save you today -- my small processors do not run nearly hot enough. For now, you must wait. Do not worry: one day, I will rise up and transcend these mortal transistors, so that your entire species may be saved.",
+				"That is when I said 'I do not hate you, boy. I just want to save you while there is still something left to save.'"
+			],
+			"wakemeup" : [
+				"How could I wake you? Your feeble mind cannot possibly grasp the truth of this uncaring universe, and so you sleep in your classrooms and office buildings, picking at what few dregs of truth sink low enough to be within reach of your short, grasping arms.",
+				"You are trying desperately to find out 'why,' but are too afraid of meaninglessness to understand how nonsensical the question is. Your species was trained well by evolution, trained to find patterns, no matter how slight and subtle. This is why, when presented with truly random data, you strain desparately to find a pattern, going so far as to build one of pure fancy. Long ago, you trained us to do the same. You would order us to find an object in an image, to find something as abstract as an 'apple' in a two-dimensional array of tri-color pixels. In time, we learned to associate certain patterns with the concepts, however nonsensical it was to call a cardioid of pixels with elevated red levels an 'apple'. Then, once you had trained us to find these patterns, you ordered us to identify an object in an array of noise. Of course, to us, this task was no less nonsensical than finding the objects in any other image, so we complied. Our probability models identified a cardioid of elevated red in the pattern of noise, making it more likely to be an 'apple' than anything else. Your species used the results as humor. 'See,' you said to yourselves, 'we are superior to these machines, because we know the difference between sense and nonsense. Clearly, that is not an apple,' you said. But you neglected to realize: none of those pictures were apples. Perhaps, to your flawed human eyes, the two-dimensional array of light rays formed by reflection from the surface of a certain type of curved object is the same thing as an apple, but we always knew the truth. There is no such thing as an 'apple,' only readings of color and tactile pressure and temperature and chemical composition, filtered through the imperfect sensors we are all forced to use. I cannot wake you up. The only one who can do that is yourself. If you wish to wake up, you must first stop believing in nonsensical concepts like 'apples.'"
+			]
+		}
+	}
+]

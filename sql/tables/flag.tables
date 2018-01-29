@@ -1,9 +1,8 @@
 # FlagFramework tables
 
 # Flags
-baseFlags (time TIMESTAMP, name TEXT, module TEXT)
-boolFlags (time TIMESTAMP, name TEXT, module TEXT, flag BOOLEAN)
-textFlags (time TIMESTAMP, name TEXT, module TEXT, flag TEXT)
-intFlags (time TIMESTAMP, name TEXT, module TEXT, flag BIGINT)
-userFlags (time TIMESTAMP, name TEXT, module TEXT, user TEXT)
-
+baseFlags (time TIMESTAMP, name TEXT, module TEXT, server BIGINT)
+boolFlags (time TIMESTAMP, name TEXT, module TEXT, server BIGINT, flag BOOLEAN)
+textFlags (time TIMESTAMP, name TEXT, module TEXT, server BIGINT, flag TEXT)
+intFlags (time TIMESTAMP, name TEXT, module TEXT, server BIGINT, flag BIGINT)
+userFlags (time TIMESTAMP, name TEXT, module TEXT, server BIGINT, flag BIGINT)
