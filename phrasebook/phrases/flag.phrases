@@ -1,0 +1,30 @@
+[
+	{
+		"module" : "flag",
+		"phrases" : {
+			"set" : [
+				"Updating flag '%1' to '%2'.",
+				"%1 is now %2.",
+				"Got it, %u. %1 set to %2."
+			],
+			"add" : [
+				"Added %1.",
+				"Alright. I added %1 to the settings database."
+			],
+			"get" : [
+				"%1 is currently '%2'. It was set at %4 by %3.",
+				"Looks like %3 set %1 to '%2' at %4."
+			],
+			"del" : [
+				"Deleted (%1,%2).",
+				"The %1 flag with value %2 is no more.",
+				"The dark deed you requested w/r/t (%1,%2) has been done, sir."
+			],
+			"delnoval" : [
+				"Deleted %1.",
+				"The %1 flag is no more.",
+				"The dark deed you requested w/r/t %1 has been done, sir."
+			]
+		}
+	}
+]

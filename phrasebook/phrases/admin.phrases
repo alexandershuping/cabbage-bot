@@ -1,0 +1,33 @@
+[
+	{ 
+		"module" : "admin",
+		"phrases" : {
+			"notauthorized" : [
+				"You aren't authorized to do that, %u.",
+				"I'm afraid I can't allow that, %u.",
+				"You don't have permission to run that command, %u.",
+				"Sorry, %u, but that command is for admins only."
+			],
+			"notfound" : [
+				"Sorry, %u. I couldn't find the user '%1'",
+				"There isn't a '%1' on this server. Did you type the name correctly?"
+			],
+			"confirmpromote" : [
+				"Are you sure you want to promote %1, with discriminator %2 and uid %3? This will allow them to manage my administrative functionalities!"
+			],
+			"confirmdemote" : [
+				"Are you sure you want to demote %1, with discriminator %2 and uid %3?"
+			],
+			"promote" : [
+				"%1 was promoted to %m administrator at %T.",
+				"Congratulations, %1! As of %T, you are now a %m administrator on this server!"
+			],
+			"demote" : [
+				"%1 was demoted at %T."
+			],
+			"abort" : [
+				"Action aborted."
+			]
+		}
+	}
+]
