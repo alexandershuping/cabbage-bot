@@ -38,19 +38,13 @@ class Poll:
 	
 	@commands.command(pass_context=True)
 	async def saveme(self, ctx):
-		self.saved = ctx.message.id
+		p = Phrasebook(ctx, self.bot)
+		await self.bot.say(p.pickPhrase('poll', 'saveme'))
 	
 	@commands.command(pass_context=True)
 	async def wakemeup(self, ctx):
-		if not self.saved:
-			await self.bot.say('Can\'t wake up.')
-		else:
-			try:
-				mess = await self.bot.get_message(self.bot.get_channel('368152735511478272'), self.saved)
-				await self.bot.add_reaction(mess, '🌅')
-				print(ctx.message.channel.id)
-			except discord.errors.NotFound:
-				await self.bot.say('Can\'t wake up.')
+		p = Phrasebook(ctx, self.bot)
+		await self.bot.say(p.pickPhrase('poll', 'wakemeup'))
 	
 	@commands.group(invoke_without_command=True)
 	async def poll(self):

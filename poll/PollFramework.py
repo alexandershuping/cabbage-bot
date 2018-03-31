@@ -2,12 +2,14 @@ import random
 import sys
 import re
 from sql.cabbagebase import CabbageBase
+from util.Logger import Logger
 from datetime import datetime, timedelta
 import cabbagerc as rc
 
 class PollFramework:
 	''' Backend tasks for polls '''
 	def __init__(self, creator, server, name=None, description=None, openTime=None, closeTime=None, absoluteThreshold=None, percentThreshold=None, percentThresholdMinimum=None, thresholdTime=None, keepUpdated=True, pollid=None):
+		self.log = Logger()
 		self.base = CabbageBase()
 		self.creator = creator
 		self.server = server
@@ -29,7 +31,8 @@ class PollFramework:
 	
 	@classmethod
 	def fromSQL(cls, queryRow):
-		print('Building pollid ' + str(queryRow[0]) + ' from SQL row')
+		log = Logger()
+		log.log('Building pollid ' + str(queryRow[0]) + ' from SQL row', 'poll', 8)
 		working = cls(queryRow[1], queryRow[2], queryRow[3], queryRow[4], queryRow[5], queryRow[6], queryRow[7], queryRow[8], queryRow[9], queryRow[10], keepUpdated=False, pollid=queryRow[0])
 		opts = []
 		for i in range(0,len(queryRow[11])):
@@ -195,8 +198,8 @@ class PollFramework:
 	def update(self):
 		''' Update the SQL database to reflect changes to the object '''
 		if not self.keepUpdated:
-			print('Ignoring update request')
 			return # Update only functions if the object has keepUpdated set true
+		self.log.log('Poll ID ' + str(self.pollid) + ' (' + self.name + ') updated.', 'poll', 7)
 		cur = self.base.getCursor()
 		table = 'polls'
 		execString = '(creatorid, serverid, name, description, pollid, openTime, closeTime, absoluteThreshold, percentThreshold, percentThresholdMinimum, thresholdTime, shortOptions, longOptions, emojiOptions)'
@@ -261,10 +264,14 @@ class PollFramework:
 					self.options['emoji'] \
 					)\
 				)
-			rc.pinfo('Created new poll with pollid ' + str(self.pollid))
+			ms = 'Created new poll with pollid ' + str(self.pollid)
+			rc.pinfo(ms)
+			self.log.log(ms, 'poll', 6)
 			self.base.commit()
 		elif cur.statusmessage != 'UPDATE 1':
-			rc.perr('Rolling back UPDATE command for Poll object due to abnormal response -- check for multiple polls with the same pollid: ' + str(self.pollid) + ' (returned message: ' + str(cur.statusmessage) + ')')
+			errm = 'Rolling back UPDATE command for Poll object due to abnormal response -- check for multiple polls with the same pollid: ' + str(self.pollid) + ' (returned message: ' + str(cur.statusmessage) + ')'
+			rc.perr(errm)
+			self.log.log(errm, 'poll', 2)
 			self.base.rollback()
 		else:
 			# Normal response; safe to commit
