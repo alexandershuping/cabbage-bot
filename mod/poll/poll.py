@@ -16,6 +16,7 @@ class Poll:
 		self.saved = None
 
 	async def on_reaction_add(self, reaction, user):
+		print('I J O M E  A LLEMS I')
 		if user == self.bot.user:
 			return
 		res = self.base.query('activemessages', ('pollid',), (('messid', int(reaction.message.id)),))
