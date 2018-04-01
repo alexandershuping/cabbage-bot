@@ -25,3 +25,5 @@ Note that these libraries can be installed automatically by running `pip install
 If the command fails with `Error: pg_config executable not found`, then you may not have installed postgresql. Please install all non-python-library components before trying to install the below libraries.
 * [discord.py](https://github.com/Rapptz/discord.py)
 * [Psycopg2](https://github.com/psycopg/psycopg2)
+* [requests](https://pypi.python.org/pypi/requests)
+* [lxml](https://pypi.python.org/pypi/lxml/)
