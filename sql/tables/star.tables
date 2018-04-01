@@ -1,0 +1,8 @@
+# Starboard tables
+
+# Stored stars
+stars(server BIGINT, chanid BIGINT, messid BIGINT, starrer BIGINT, star_time TIMESTAMP)
+
+# Stored message IDs for messages *on the starboard*. Not the messages
+# which were starred, but the copies which are posted on the starboard.
+starboard(server BIGINT, starboard BIGINT, starboard_message_messid BIGINT, original_message_channel BIGINT, original_message_messid BIGINT, original_message_sent TIMESTAMP)

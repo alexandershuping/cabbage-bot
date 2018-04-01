@@ -6,10 +6,9 @@ from datetime import datetime, timedelta
 
 class FlagFramework:
 	''' Functions for managing simple flags in the SQL database
-	  ' Note that flags are not unique -- that is, it is possible to have
-		' multiple flags with the same name but different values.
-		'''
-
+	    Note that flags are not unique -- that is, it is possible to have
+		  multiple flags with the same name but different values.
+	'''
 
 	def __init__(self):
 		self.base = CabbageBase()
@@ -18,7 +17,8 @@ class FlagFramework:
 
 
 	def fset(self, flag, module, server=0):
-		''' Sets a flag without a value '''
+		''' Set a flag without a value 
+		'''
 		cmd = 'INSERT INTO baseFlags (time, name, module, server) VALUES (%s,%s,%s,%s)'
 		cur = self.base.getCursor()
 		cur.execute(cmd, (datetime.now(), flag, module, int(server)))
@@ -27,7 +27,8 @@ class FlagFramework:
 
 
 	def bset(self, flag, module, server=0, value=True):
-		''' Sets a flag with a boolean value '''
+		''' Set a flag with a boolean value 
+		'''
 		cmd = 'INSERT INTO boolFlags (time, name, module, flag, server) VALUES (%s,%s,%s,%s,%s)'
 		cur = self.base.getCursor()
 		cur.execute(cmd, (datetime.now(), flag, module, value, int(server)))
@@ -36,7 +37,8 @@ class FlagFramework:
 
 
 	def tset(self, flag, module, server=0, value=''):
-		''' Sets a flag with a plaintext value '''
+		''' Set a flag with a plaintext value 
+		'''
 		cmd = 'INSERT INTO textFlags (time, name, module, flag, server) VALUES (%s,%s,%s,%s,%s)'
 		cur = self.base.getCursor()
 		cur.execute(cmd, (datetime.now(), flag, module, value, int(server)))
@@ -45,7 +47,8 @@ class FlagFramework:
 
 
 	def iset(self, flag, module, server=0, value=0):
-		''' Sets a flag with an integer value '''
+		''' Set a flag with an integer value 
+		'''
 		cmd = 'INSERT INTO intFlags (time, name, module, flag, server) VALUES (%s,%s,%s,%s,%s)'
 		cur = self.base.getCursor()
 		cur.execute(cmd, (datetime.now(), flag, module, value, int(server)))
@@ -54,7 +57,8 @@ class FlagFramework:
 
 
 	def uset(self, flag, module, server, value):
-		''' Sets a flag with a discord user value '''
+		''' Set a flag with a discord user value 
+		'''
 		cmd = 'INSERT INTO userFlags (time, name, module, flag, server) VALUES (%s,%s,%s,%s,%s)'
 		cur = self.base.getCursor()
 		cur.execute(cmd, (datetime.now(), flag, module, value, int(server)))
@@ -63,16 +67,18 @@ class FlagFramework:
 
 
 	def hasFlag(self, name, module, server=0):
-		''' Checks if the given flag exists, regardless of type or value '''
+		''' Checks if the given flag exists, regardless of type or value 
+		'''
 		for table in self.tables:
-			if self.base.isPresentIn('name', name, table, (('module',module),('server',int(server)))):
+			if self.base.isPresentIn('name', name, table, (('module',module),('server',int(str(server))))):
 				return True
 
 		return False
 
 
 	def getFlag(self, name, module, server=0):
-		''' Gets all present values for the given flag '''
+		''' Return all present values for the given flag 
+		'''
 		flags = []
 		for table in self.tables:
 			if table == 'baseflags':
@@ -92,10 +98,11 @@ class FlagFramework:
 
 
 	def delFlag(self, name, module, server=0, value=None):
-		''' Removes a flag from the database.'''
+		''' Remove a flag from the database
+		'''
 		for dex,table in enumerate(self.tables):
 			if value and type(value) != self.ttypes[dex]:
-				''' This table can't possibly have the value. Skip it.'''
+				# This table can't possibly have the value. Skip it.
 				continue
 			cmd = 'DELETE FROM {} WHERE name = %s AND module = %s AND server = %s'
 			if value and table != 'baseflags':

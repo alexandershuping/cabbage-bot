@@ -1,0 +1,49 @@
+[
+	{ 
+		"module" : "starboard",
+		"phrases" : {
+			"working" : [
+				"Starboard is ONLINE! Starred messages go to channel %1.",
+				"The starboard party is at %1.",
+				"The starboard party is at %1. Go there for highlights."
+			],
+			"offline" : [
+				"The starboard hasn't been set up yet. Ask your friendly admin for help.",
+				"Sorry - I need some help setting up the starboard before you can use it."
+			],
+			"setup" : [
+				"Setting up starboard on channel %1...",
+				"Get ready, %1, the starboard is about to begin!",
+				"Booting starboard on %1..."
+			],
+			"needsthresh" : [
+				"Wait. I need a threshold number (the number of stars a message needs before I can immortalize it on the starboard). Could you provide one, please?",
+				"Hold on. I need to know what you want the minimum star threshold to be (i.e. how many stars it takes before I put a message on the big board). Could you tell me?"
+			],
+			"badconfirmer" : [
+				"(nobody asked you, %1)",
+				"im sorry %1 did anyone say you could speak?",
+				"im sorry %1 i dont remember asking you anything",
+				"im sorry %1 i dont recall giving you permission to speak",
+				"%1, you aren't part of this conversation. It's rude to eavesdrop."
+			],
+			"nothresh" : [
+				"O-kay... So, the silent treatment, then? Well, I'm just going to pick a number! How does %1 sound?",
+				"Timed out while waiting for a threshold number. The number is now %1."
+			],
+			"badthresh" : [
+				"I honestly have no idea what you just typed at me. Please send just a number.",
+				"Did your human fingers press the wrong buttons? Because I can't read a number in that. I mean, ***maybe*** it's %1, but actually I don't think it's %1. Try again, please -- this time, just the number."
+			],
+			"negative" : [
+				"No. That's not how that works. The threshold has to be ***positive***. Try again.",
+				"NEGATIVE AND ZERO THRESHOLD IS ``F O R B I D D E N``. You have been warned."
+			],
+
+
+			"messagenotfound" : [
+				"Sorry, I couldn't find that message. Is it in this channel?"
+			]
+		}
+	}
+]

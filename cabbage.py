@@ -14,7 +14,8 @@ modules = [
 	'mod.roller.roller',
 	'mod.trump.trump',
 	'mod.admin.admin',
-	'mod.poll.poll'
+	'mod.poll.poll',
+	'mod.starboard.starboard'
 ]
 
 def autoset():
