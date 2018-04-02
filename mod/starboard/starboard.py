@@ -28,9 +28,10 @@ class Starboard_cog:
 		ACCEPTABLE_REACTIONS = ['⭐','🌠','🌟','🔯','✡','✴','❇',]
 		if reaction.emoji in ACCEPTABLE_REACTIONS:
 			sb = Starboard(reaction.message.server, self.bot)
-			sm = sb.getStarboardMessage(reaction.message.channel.id, reaction.message.id)
-			sm.star(reaction.message.author.id)
-			await sm.updateStarboard(reaction.message.server, reaction.message.channel, self.bot)
+			if sb.isWorking():
+				sm = sb.getStarboardMessage(reaction.message.channel.id, reaction.message.id)
+				sm.star(reaction.message.author.id)
+				await sm.updateStarboard(reaction.message.server, reaction.message.channel, self.bot)
 			
 
 	
@@ -138,7 +139,7 @@ class Starboard_cog:
 				if int(thresh) <= 0:
 					await self.bot.say(p.pickPhrase('starboard', 'negative'))
 				else:
-					s.reset(s.channel, int(thresh))
+					s.reset(s.sbChannel, int(thresh))
 					await self.bot.say('Confirmed.')
 	
 
