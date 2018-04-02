@@ -30,7 +30,7 @@ class Starboard_cog:
 			sb = Starboard(reaction.message.server, self.bot)
 			sm = sb.getStarboardMessage(reaction.message.channel.id, reaction.message.id)
 			sm.star(reaction.message.author.id)
-			await sm.updateStarboard(reaction.message.server, self.bot)
+			await sm.updateStarboard(reaction.message.server, reaction.message.channel, self.bot)
 			
 
 	
