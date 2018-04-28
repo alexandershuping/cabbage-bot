@@ -131,7 +131,7 @@ class SCP:
 					url_pass1 = url_pass1 + '-'
 			
 			# pass 2 -- compress '-' characters and add the http://scp-wiki.net/
-			url = 'http://scp-wiki.net/'
+			url = ''
 			for dex,char in enumerate(url_pass1):
 				if char == '-':
 					if dex == len(url_pass1)-1 or dex == 0:
@@ -143,6 +143,11 @@ class SCP:
 							url = url + '-'
 				else:
 					url = url + char
+
+			if url == 'iteration-f':
+				await self.bot.say(p.pickPhrase('scp','iteration-f', ctx.message.author.mention))
+				return
+			url = 'http://scp-wiki.net/' + url
 
 			# Attempt to retrieve tale
 			r = requests.get(url)

@@ -22,6 +22,12 @@
 			],
 			"iteration-f" : [
 				"No.",
+				"Denied.",
+				"Request denied.",
+				"Did you know that world-renowned writer Stephen King was once hit by a car? Just something to consider.",
+				"Did you know that world-renowned writer Stephen King was once hit by a car? Just something to consider.",
+				"Did you know that world-renowned writer Stephen King was once hit by a car? Just something to consider.",
+				"Did you know that world-renowned writer Stephen King was once hit by a car? Just something to consider.",
 				"ATTENTION, %1! YOUR ACTIONS INDICATE A HIGH LIKELIHOOD OF INFECTION BY A KNOWN COGNITOHAZARD! MTF LAMBDA-██ (███████████) HAS BEEN DISPATCHED TO YOUR TERMINAL. PLEASE REMAIN CALM AND COMPLY WITH TASK-FORCE AGENTS."
 			],
 			"other-http-error" : [
