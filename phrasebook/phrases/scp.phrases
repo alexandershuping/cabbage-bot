@@ -1,0 +1,32 @@
+[
+	{ 
+		"module" : "scp",
+		"phrases" : {
+			"success" : [
+				"SUCCESSFULLY RETRIEVED DATABASE ENTRY.",
+				"Here is the file. Be careful.",
+				"Access logged with RAISA.",
+				"This action will be reported."
+			],
+			"scp-404" : [
+				"I couldn't retrieve the file on SCP-%1. Did you type the number correctly?",
+				"RAISA told me that 'there is no SCP-%1'. Do with that what you will.",
+				"Either there is no SCP-%1 in the database, or you don't have the clearance to view it. Sorry.",
+				"ALERT! YOU ARE NOT AUTHORIZED TO DATABASE ENTRY 'SCP-%1'! THIS EVENT HAS BEEN REPORTED!"
+			],
+			"scp-too-meta" : [
+				"That SCP is so meta, I couldn't even find the title. Here's the link, though: %1"
+			],
+			"tale-404" : [
+				"I can't find the tale '%1'. Are you sure you have the right title? Check the page URL."
+			],
+			"iteration-f" : [
+				"No.",
+				"ATTENTION, %1! YOUR ACTIONS INDICATE A HIGH LIKELIHOOD OF INFECTION BY A KNOWN COGNITOHAZARD! MTF LAMBDA-██ (███████████) HAS BEEN DISPATCHED TO YOUR TERMINAL. PLEASE REMAIN CALM AND COMPLY WITH TASK-FORCE AGENTS."
+			],
+			"other-http-error" : [
+				"The database responded with a HTTP %1. Maybe try again later?"
+			]
+		}
+	}
+]
