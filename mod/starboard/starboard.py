@@ -30,7 +30,7 @@ class Starboard_cog:
 			sb = Starboard(reaction.message.server, self.bot)
 			if sb.isWorking():
 				sm = sb.getStarboardMessage(reaction.message.channel.id, reaction.message.id)
-				sm.star(reaction.message.author.id)
+				sm.star(user.id)
 				await sm.updateStarboard(reaction.message.server, reaction.message.channel, self.bot)
 			
 
@@ -169,9 +169,10 @@ class Starboard_cog:
 			return
 
 		sb = Starboard(ctx.message.server, self.bot)
-		sm = sb.getStarboardMessage(mes.channel.id, mes.id)
-		sm.star(ctx.message.author.id)
-		await sm.updateStarboard(ctx.message.server, mes.channel, self.bot)
+		if sb.isWorking():
+			sm = sb.getStarboardMessage(mes.channel.id, mes.id)
+			sm.star(ctx.message.author.id)
+			await sm.updateStarboard(ctx.message.server, mes.channel, self.bot)
 	
 
 
